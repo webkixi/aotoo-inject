@@ -9,6 +9,22 @@
 npm install aotoo-inject --save
 ```
 
+## instantiation
+```
+// opts = {
+//   mapper: {
+//     js: {},
+//     css: {}
+//   }
+//   public: {
+//     js: '/',
+//     css: '/'
+//   }
+// }
+
+var inject = require('aotoo-inject')(opts)
+```
+
 ## single sample
 ```
 var inject = require('aotoo-inject')()
