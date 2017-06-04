@@ -17,8 +17,8 @@ npm install aotoo-inject --save
 //     css: {}
 //   }
 //   public: {
-//     js: '/',
-//     css: '/'
+//     js: '/',  default: '/js/'
+//     css: '/'  default: '/css/'
 //   }
 // }
 
