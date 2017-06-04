@@ -1,4 +1,4 @@
-# FKP-SAX
+# aotoo-inject
 动态注入静态资源，动态注入css，js
 1. 防重复注入  
 2. 支持映射mapper文件
