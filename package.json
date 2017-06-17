@@ -1,6 +1,6 @@
 {
   "name": "aotoo-inject",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "store data and action X",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webkixi/fkp-sax.git"
+    "url": "git+https://github.com/webkixi/aotoo-inject.git"
   },
   "keywords": [
     "aotoo",
@@ -18,11 +18,11 @@
   "author": "webkixi",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/webkixi/"
+    "url": "https://github.com/webkixi/aotoo-inject/issues"
   },
-  "homepage": "https://github.com/webkixi/",
+  "homepage": "https://github.com/webkixi/aotoo-inject#readme",
   "dependencies": {
     "blueimp-md5": "^2.7.0",
-    "fkp-sax": "^1.5.17"
+    "fkp-sax": "^1.5.19"
   }
 }

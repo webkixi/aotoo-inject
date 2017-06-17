@@ -6,6 +6,6 @@ blueimp-md5@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/blueimp-md5/-/blueimp-md5-2.7.0.tgz#7f518e0dd70467fefe28ecba398916092f2a02a9"
 
-fkp-sax@^1.5.17:
+fkp-sax@^1.5.19:
   version "1.5.19"
   resolved "https://registry.yarnpkg.com/fkp-sax/-/fkp-sax-1.5.19.tgz#7e911b778eeea0618190f74d21ff4711ab40dcfe"
