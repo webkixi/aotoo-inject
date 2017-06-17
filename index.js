@@ -8,7 +8,7 @@ var ImmitSax = SAX('IMMITSAX')
 
 function execCallBack(cb){
   setTimeout(function() {
-    cb()
+    typeof cb == 'function' ? cb() : ''
   }, 100);
 }
 
@@ -70,7 +70,7 @@ function createCSSInner(id, cssCode, cb){
 
 // 生成js引用或者inner code
 function createJSScript(id, src, cb){
-  var headElement = doc.getElementsByTagName("head")[0];
+  var headElement = document.getElementsByTagName("head")[0];
 
   var scripter = document.createElement('script');
   scripter.setAttribute("type", 'text/javascript');
@@ -120,7 +120,7 @@ function immitStatics(opts){
     css: '/css/',
     js: '/js/'
   }
-  this.mapper = opts.mapper || {}
+  this.mapper = opts.mapper || {css: {}, js: {}, pageCss: {}, pageJs: {}}
 }
 
 immitStatics.prototype = {
@@ -185,7 +185,7 @@ immitStatics.prototype = {
         if (src.length == 1) {
           that._js(src[0], function(){
             src.shift()
-            cb()
+            typeof cb == 'function' ? cb() : ''
           })
         } else {
           that._js(src[0], function(){
@@ -208,7 +208,7 @@ immitStatics.prototype = {
         if (src.length == 1) {
           that._css(src[0], function(){
             src.shift()
-            cb()
+            typeof cb == 'function' ? cb() : ''
           })
         } else {
           that._css(src[0], function(){
