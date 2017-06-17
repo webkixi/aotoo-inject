@@ -1,6 +1,6 @@
 {
   "name": "aotoo-inject",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "store data and action X",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/webkixi/",
   "dependencies": {
+    "blueimp-md5": "^2.7.0",
     "fkp-sax": "^1.5.17"
   }
 }

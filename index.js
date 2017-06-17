@@ -221,6 +221,34 @@ immitStatics.prototype = {
   }
 }
 
+
+/*
+  const immit = inject({
+    public: {
+      css: '',
+      js: ''
+    }, 
+
+    mapper: {}
+  })
+
+  immit.css('/css/xxx.css', cb)
+  immit.js('/js/xxx.js', cb)
+
+  immit.js([
+    '/js/xxx.js'
+    '/js/yyy.js'
+  ], function(){
+
+  })
+
+  immit.css([
+    '/js/xxx.js'
+    '/js/yyy.js'
+  ], function(){
+
+  })
+*/
 module.exports = function inject(opts){
   return new immitStatics(opts)
 }
