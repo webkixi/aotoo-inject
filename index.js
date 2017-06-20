@@ -195,6 +195,7 @@ immitStatics.prototype = {
         }
       }
     }
+    return this
   },
 
   css: function(src, cb){
@@ -218,6 +219,7 @@ immitStatics.prototype = {
         }
       }
     }
+    return this
   }
 }
 
