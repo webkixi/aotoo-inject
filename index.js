@@ -94,7 +94,7 @@ function createJSScript(id, src, cb){
 }
 
 function immitCss(id, src, cb){
-  if (src.indexOf('http') || src.indexOf('/')==0) {
+  if (src.indexOf('http')==0 || src.indexOf('/')==0) {
     ImmitSax.on(id, cb)
     return createCSSlink(id, src, cb)
   } else {
@@ -104,7 +104,7 @@ function immitCss(id, src, cb){
 }
 
 function immitJs(id, src, cb){
-  if (src.indexOf('http') || src.indexOf('/')==0) {
+  if (src.indexOf('http')==0 || src.indexOf('/')==0) {
     ImmitSax.on(id, cb)
     return createJSScript(id, src, cb)
   } else {
