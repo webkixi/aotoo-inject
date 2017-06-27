@@ -22,7 +22,7 @@ function createCSSlink(id, src, cb){
   var tmpLink = doc.createElement('link');
   tmpLink.onload = tmpLink.onreadystatechange = function(){
     if( ! this.readyState || this.readyState=='loaded' || this.readyState=='complete' ){
-      ImmitSax.data[id] = 'finish`'
+      ImmitSax.data[id] = 'finish'
       ImmitSax.roll(id)
       ImmitSax.off(id)
     }
@@ -66,6 +66,10 @@ function createCSSInner(id, cssCode, cb){
   } else {
     styleElement.appendChild(doc.createTextNode(cssCode))
   }
+
+  ImmitSax.data[id] = 'finish'
+  ImmitSax.roll(id)
+  ImmitSax.off(id)
 }
 
 // 生成js引用或者inner code
@@ -91,6 +95,9 @@ function createJSScript(id, src, cb){
     scripter.appendChild(document.createTextNode(src))
     headElement.appendChild(scripter);
   }
+  ImmitSax.data[id] = 'finish'
+  ImmitSax.roll(id)
+  ImmitSax.off(id)
 }
 
 function immitCss(id, src, cb){
