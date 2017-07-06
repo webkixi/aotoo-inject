@@ -35,6 +35,26 @@ function createCSSlink(id, src, cb){
   headElement.appendChild(tmpLink);
 }
 
+function createCSSServer(did, src, cb){
+  var publicPath = this.public.css
+  if (src.indexOf('http')==0 || src.indexOf(publicPath)==0) {
+    this.staticList.css[did] = '<link id="'+did+'" rel="stylesheet" type="text/css" href="'+src+'">\n'
+  }
+  else {
+    this.staticList.css[did] = '<style type="text/css" id="'+did+'">'+content.toString()+'</style>\n'
+  }
+}
+
+function createJSServer(did, src, cb){
+  var publicPath = this.public.js
+  if (src.indexOf('http')==0 || src.indexOf(publicPath)==0) {
+    this.staticList.js[did] = '<script type="text/javascript" id="'+did+'" src="'+src+'"></script>\n'
+  }
+  else {
+    this.staticList.js[did] = '<script type="text/javascript" id="'+did+'" src="/js/'+src+'"></script>\n'
+  }
+}
+
 
 // 注入内联样式
 function createCSSInner(id, cssCode, cb){
@@ -123,6 +143,9 @@ function immitJs(id, src, cb){
 function immitStatics(opts){
   if (!opts) opts = {}
   this.opts = opts
+  this.staticList = {
+    js: {}, css: {}
+  }
   this.public = opts.public || {
     css: '/css/',
     js: '/js/'
@@ -131,6 +154,11 @@ function immitStatics(opts){
 }
 
 immitStatics.prototype = {
+  init: function(){
+    this.staticList = {
+      js: {}, css: {}
+    }
+  },
   _js: function(src, cb){
     var mapper = this.mapper
     if (mapper.js[src] || mapper.pageJs[src]) {
@@ -144,15 +172,19 @@ immitStatics.prototype = {
 
     var $id = md5(src).slice(22)
     var data = ImmitSax.data
-    if (data[$id]) {
-      if (data[$id] == 'finish') {
-        execCallBack(cb)
-      } else {
-        ImmitSax.on($id, cb)
-      }
+    if (!isClient) {
+      return createJSServer.call(this, $id, src, cb)
     } else {
-      data[$id] = 'loading'
-      immitJs($id, src, cb)
+      if (data[$id]) {
+        if (data[$id] == 'finish') {
+          execCallBack(cb)
+        } else {
+          ImmitSax.on($id, cb)
+        }
+      } else {
+        data[$id] = 'loading'
+        immitJs($id, src, cb)
+      }
     }
   },
 
@@ -169,15 +201,19 @@ immitStatics.prototype = {
 
     var $id = md5(src).slice(22)
     var data = ImmitSax.data
-    if (data[$id]) {
-      if (data[$id] == 'finish') {
-        execCallBack(cb)
-      } else {
-        ImmitSax.on($id, cb)
-      }
+    if (!isClient) {
+      return createCSSServer.call(this, $id, src, cb)
     } else {
-      data[$id] = 'loading'
-      immitCss($id, src, cb)
+      if (data[$id]) {
+        if (data[$id] == 'finish') {
+          execCallBack(cb)
+        } else {
+          ImmitSax.on($id, cb)
+        }
+      } else {
+        data[$id] = 'loading'
+        immitCss($id, src, cb)
+      }
     }
   },
 
