@@ -159,17 +159,61 @@ immitStatics.prototype = {
       js: {}, css: {}
     }
   },
-  _js: function(src, cb){
-    var mapper = this.mapper
-    if (mapper.js[src] || mapper.pageJs[src]) {
-      var tmp_src = (mapper.js[src] || mapper.pageJs[src])
-      if (tmp_src.indexOf('http')==0) {
-        src = tmp_src
-      } else {
-        src = path.join(this.public.js, tmp_src)
-      }
+
+  realySrc: function(src, type='css'){
+    var mapper = this.mapper;
+    var css, js, target;
+    var pbc = this.public;
+    var publicStat = false;
+    var obj = path.parse(src)
+
+    if (mapper.commonDependencies) {
+      css = mapper.dependencies.css;
+      js = mapper.dependencies.js
+    } 
+    else {
+      css = mapper.css || mapper.pageCss
+      js = mapper.js || mapper.pageJs
     }
 
+    if (src.indexOf('http://')==0) {
+      return src
+    }
+    
+    if (src.indexOf(pbc.css)==0 || src.indexOf(pbc.js)==0 ) {
+      publicStat = true
+      src = src.replace(pbc.css, '').replace(pbc.js, '')
+    }
+    
+    var _src = src
+    if (obj.ext) {
+      _src = src.replace(obj.ext, '')
+    }
+
+    if (type == 'css') {
+      target = css[_src]
+    }
+
+    if (type == 'js') {
+      target = js[_src]
+    }
+
+    if (target) {
+      if (target.indexOf('http')==0) {
+        return target
+      } 
+      return type == 'css' ? path.join(this.public.css, target) : path.join(this.public.js, target)
+    }
+
+    if (publicStat) {
+      return type == 'css' ? path.join(this.public.css, src) : path.join(this.public.js, src)
+    } else {
+      return src
+    }
+  },
+  _js: function(src, cb){
+    src = this.realySrc(src, 'js')
+    
     var $id = md5(src).slice(22)
     var data = ImmitSax.data
     if (!isClient) {
@@ -189,16 +233,18 @@ immitStatics.prototype = {
   },
 
   _css: function(src, cb){
-    var mapper = this.mapper
-    if (mapper.css[src] || mapper.pageCss[src]) {
-      var tmp_src = (mapper.css[src] || mapper.pageCss[src])
-      if (tmp_src.indexOf('http')==0) {
-        src = tmp_src
-      } else {
-        src = path.join(this.public.css, tmp_src)
-      }
-    }
-
+    // var mapper = this.mapper
+    // if (mapper.css[src] || mapper.pageCss[src]) {
+    //   var tmp_src = (mapper.css[src] || mapper.pageCss[src])
+    //   if (tmp_src.indexOf('http')==0) {
+    //     src = tmp_src
+    //   } else {
+    //     src = path.join(this.public.css, tmp_src)
+    //   }
+    // }
+    
+    src = this.realySrc(src, 'css')
+    
     var $id = md5(src).slice(22)
     var data = ImmitSax.data
     if (!isClient) {
