@@ -195,18 +195,6 @@ immitStatics.prototype = {
     var publicStat = false;
     var ext = path.extname(src)
 
-    if (mapper.commonDependencies) {
-      css = mapper.dependencies.css;
-      js = mapper.dependencies.js
-      css.common = mapper.commonDependencies.css.common
-      js.common = mapper.commonDependencies.js.common
-      js.ie = mapper.commonDependencies.js.ie
-    } 
-    else {
-      css = mapper.css || mapper.pageCss
-      js = mapper.js || mapper.pageJs
-    }
-
     if (src.indexOf('http://')==0) {
       return src
     }
