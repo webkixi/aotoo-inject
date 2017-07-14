@@ -160,17 +160,47 @@ immitStatics.prototype = {
     }
   },
 
-  realySrc: function(src, type='css'){
+  myMapper: function(){
     var mapper = this.mapper;
-    var css, js, target;
+    var css, js;
+    if (mapper.commonDependencies) {
+      css = mapper.dependencies.css;
+      js = mapper.dependencies.js
+      css.common = mapper.commonDependencies.css.common
+      js.common = mapper.commonDependencies.js.common
+      js.ie = mapper.commonDependencies.js.ie
+    } 
+    else {
+      css = mapper.css || mapper.pageCss
+      js = mapper.js || mapper.pageJs
+    }
+
+    var _mapper = {
+      css: css,
+      js: js
+    }
+    this.mapper = _mapper
+    return _mapper
+  },
+
+  realySrc: function(src, type='css'){
+    var mapper = this.myMapper()
+    var css = mapper.css
+    var js = mapper.js
+    var target
+
+    // var mapper = this.mapper;
+    // var css, js, target;
     var pbc = this.public;
     var publicStat = false;
-    // var obj = path.parse(src)
     var ext = path.extname(src)
 
     if (mapper.commonDependencies) {
       css = mapper.dependencies.css;
       js = mapper.dependencies.js
+      css.common = mapper.commonDependencies.css.common
+      js.common = mapper.commonDependencies.js.common
+      js.ie = mapper.commonDependencies.js.ie
     } 
     else {
       css = mapper.css || mapper.pageCss
