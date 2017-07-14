@@ -165,7 +165,8 @@ immitStatics.prototype = {
     var css, js, target;
     var pbc = this.public;
     var publicStat = false;
-    var obj = path.parse(src)
+    // var obj = path.parse(src)
+    var ext = path.extname(src)
 
     if (mapper.commonDependencies) {
       css = mapper.dependencies.css;
@@ -186,8 +187,8 @@ immitStatics.prototype = {
     }
     
     var _src = src
-    if (obj.ext) {
-      _src = src.replace(obj.ext, '')
+    if (ext) {
+      _src = src.replace(ext, '')
     }
 
     if (type == 'css') {
