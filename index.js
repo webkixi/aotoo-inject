@@ -37,21 +37,27 @@ function createCSSlink(id, src, cb){
 
 function createCSSServer(did, src, cb){
   var publicPath = this.public.css
-  if (src.indexOf('http')==0 || src.indexOf(publicPath)==0) {
+  if (src.indexOf('http')==0 || src.indexOf(publicPath)==0 || src.indexOf('/')==0) {
     this.staticList.css[did] = '<link id="'+did+'" rel="stylesheet" type="text/css" href="'+src+'">\n'
   }
   else {
-    this.staticList.css[did] = '<style type="text/css" id="'+did+'">'+content.toString()+'</style>\n'
+    this.staticList.css[did] = '<style type="text/css" id="'+did+'">'+src.toString()+'</style>\n'
+  }
+  if (typeof cb == 'function') {
+    cb()
   }
 }
 
 function createJSServer(did, src, cb){
   var publicPath = this.public.js
-  if (src.indexOf('http')==0 || src.indexOf(publicPath)==0) {
+  if (src.indexOf('http')==0 || src.indexOf(publicPath)==0 || src.indexOf('/')==0) {
     this.staticList.js[did] = '<script type="text/javascript" id="'+did+'" src="'+src+'"></script>\n'
   }
   else {
-    this.staticList.js[did] = '<script type="text/javascript" id="'+did+'" src="/js/'+src+'"></script>\n'
+    this.staticList.js[did] = '<script type="text/javascript" id="'+did+'" >'+src.toString()+'</script>\n'
+  }
+  if (typeof cb == 'function') {
+    cb()
   }
 }
 
