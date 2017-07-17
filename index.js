@@ -164,6 +164,7 @@ immitStatics.prototype = {
     this.staticList = {
       js: {}, css: {}
     }
+    return this
   },
 
   myMapper: function(){

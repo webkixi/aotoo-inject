@@ -1,6 +1,6 @@
 {
   "name": "aotoo-inject",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "store data and action X",
   "main": "index.js",
   "scripts": {
