@@ -190,7 +190,8 @@ immitStatics.prototype = {
     return _mapper
   },
 
-  realySrc: function(src, type='css'){
+  realySrc: function(src, type){
+    if (!type) type = 'css'
     var mapper = this.myMapper()
     var css = mapper.css
     var js = mapper.js
