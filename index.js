@@ -239,54 +239,50 @@ immitStatics.prototype = {
     }
   },
   _js: function(src, cb){
-    src = this.realySrc(src, 'js')
-    
-    var $id = md5(src).slice(22)
-    var data = ImmitSax.data
-    if (!isClient) {
-      return createJSServer.call(this, $id, src, cb)
-    } else {
-      if (data[$id]) {
-        if (data[$id] == 'finish') {
-          execCallBack(cb)
-        } else {
-          ImmitSax.on($id, cb)
-        }
+    if (src) {
+      src = this.realySrc(src, 'js')
+      var $id = md5(src).slice(22)
+      var data = ImmitSax.data
+      if (!isClient) {
+        return createJSServer.call(this, $id, src, cb)
       } else {
-        data[$id] = 'loading'
-        immitJs($id, src, cb)
+        if (data[$id]) {
+          if (data[$id] == 'finish') {
+            execCallBack(cb)
+          } else {
+            ImmitSax.on($id, cb)
+          }
+        } else {
+          data[$id] = 'loading'
+          immitJs($id, src, cb)
+        }
       }
+    } else {
+      cb()
     }
   },
 
   _css: function(src, cb){
-    // var mapper = this.mapper
-    // if (mapper.css[src] || mapper.pageCss[src]) {
-    //   var tmp_src = (mapper.css[src] || mapper.pageCss[src])
-    //   if (tmp_src.indexOf('http')==0) {
-    //     src = tmp_src
-    //   } else {
-    //     src = path.join(this.public.css, tmp_src)
-    //   }
-    // }
-    
-    src = this.realySrc(src, 'css')
-    
-    var $id = md5(src).slice(22)
-    var data = ImmitSax.data
-    if (!isClient) {
-      return createCSSServer.call(this, $id, src, cb)
-    } else {
-      if (data[$id]) {
-        if (data[$id] == 'finish') {
-          execCallBack(cb)
-        } else {
-          ImmitSax.on($id, cb)
-        }
+    if (src) {
+      src = this.realySrc(src, 'css')
+      var $id = md5(src).slice(22)
+      var data = ImmitSax.data
+      if (!isClient) {
+        return createCSSServer.call(this, $id, src, cb)
       } else {
-        data[$id] = 'loading'
-        immitCss($id, src, cb)
+        if (data[$id]) {
+          if (data[$id] == 'finish') {
+            execCallBack(cb)
+          } else {
+            ImmitSax.on($id, cb)
+          }
+        } else {
+          data[$id] = 'loading'
+          immitCss($id, src, cb)
+        }
       }
+    } else {
+      cb()
     }
   },
 
