@@ -108,7 +108,7 @@ function createJSScript(id, src, cb){
   if (src.indexOf('http')===0 || src.indexOf('/')===0){
     scripter.onload = scripter.onreadystatechange = function(){
       if( ! this.readyState || this.readyState=='loaded' || this.readyState=='complete' ){
-        ImmitSax.data[id] = 'finish`'
+        ImmitSax.data[id] = 'finish'
         ImmitSax.roll(id)
         ImmitSax.off(id)
       }
@@ -203,7 +203,7 @@ immitStatics.prototype = {
     var publicStat = false;
     var ext = path.extname(src)
 
-    if (src.indexOf('http://')==0) {
+    if (src.indexOf('http')==0) {
       return src
     }
     
