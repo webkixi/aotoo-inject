@@ -12,6 +12,15 @@ function execCallBack(cb){
   }, 100);
 }
 
+function reserveExt(ext){
+  const vExts = [
+    '.min',
+    '.esm',
+    '.bundle'
+  ]
+  return vExts.indexOf(ext)>-1 ? true : false
+}
+
 // 注入引用样式
 function createCSSlink(id, src, cb){
   if(document.getElementById(id)) return true;
@@ -214,7 +223,9 @@ immitStatics.prototype = {
     
     var _src = src
     if (ext) {
-      _src = src.replace(ext, '')
+      if (!reserveExt(ext)) {
+        _src = src.replace(ext, '')
+      }
     }
 
     if (type == 'css') {
