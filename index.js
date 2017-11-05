@@ -218,7 +218,7 @@ immitStatics.prototype = {
     
     if (src.indexOf(pbc.css)==0 || src.indexOf(pbc.js)==0 ) {
       publicStat = true
-      src = src.replace(pbc.css, '').replace(pbc.js, '')
+      src = src.replace(pbc.css, '').replace(pbc.js, '').replace(path.sep, '')
     }
     
     var _src = src
