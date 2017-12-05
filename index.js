@@ -1,4 +1,5 @@
 var isClient = typeof window != 'undefined'
+var Url = require('url')
 var path = require('path')
 var md5 = require('blueimp-md5')
 if (typeof SAX == 'undefined') {
@@ -19,6 +20,14 @@ function reserveExt(ext){
     '.bundle'
   ]
   return vExts.indexOf(ext)>-1 ? true : false
+}
+
+function path_join(jspath, src) {
+  if (jspath.indexOf('http') == 0 || jspath.indexOf('//') == 0) {
+    return Url.resolve(jspath, src)
+  } else {
+    return path.join(jspath, src)
+  }
 }
 
 // 注入引用样式
@@ -243,11 +252,11 @@ immitStatics.prototype = {
       if (target.indexOf('http')==0) {
         return target
       } 
-      return type == 'css' ? path.join(this.public.css, target) : path.join(this.public.js, target)
+      return type == 'css' ? path_join(this.public.css, target) : path_join(this.public.js, target)
     }
 
     if (publicStat) {
-      return type == 'css' ? path.join(this.public.css, src) : path.join(this.public.js, src)
+      return type == 'css' ? path_join(this.public.css, src) : path_join(this.public.js, src)
     } else {
       return src
     }
