@@ -131,7 +131,7 @@ function createJSScript(id, src, cb){
         ImmitSax.off(id)
       }
     }
-    if (src.lastIndexOf('.js')==-1) src += '.js'
+    // if (src.lastIndexOf('.js')==-1) src += '.js'
     scripter.setAttribute("src", src);
     headElement.appendChild(scripter);
   }
