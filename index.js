@@ -6,6 +6,7 @@ if (typeof SAX == 'undefined') {
   var SAX = require('fkp-sax')
 }
 var ImmitSax = SAX('IMMITSAX')
+const reNewLine = /\n+$/g
 
 function execCallBack(cb){
   setTimeout(function() {
@@ -24,9 +25,17 @@ function reserveExt(ext){
 
 function path_join(jspath, src) {
   if (jspath.indexOf('http') == 0 || jspath.indexOf('//') == 0) {
-    return Url.resolve(jspath, src)
+    if (jspath.charAt(jspath.length - 1) == '/') {
+      jspath = jspath.substring(0, jspath.length - 1)
+    }
+    if (src.charAt(0) == '/') {
+      return jspath + src
+    } else {
+      return jspath + '/' + src
+    }
+    // return Url.resolve(jspath, src);
   } else {
-    return path.join(jspath, src)
+    return Path.join(jspath, src);
   }
 }
 
@@ -210,6 +219,7 @@ immitStatics.prototype = {
 
   realySrc: function(src, type){
     if (!type) type = 'css'
+    if (reNewLine.test(src)) return src
     var mapper = this.myMapper()
     var css = mapper.css
     var js = mapper.js
@@ -221,14 +231,14 @@ immitStatics.prototype = {
     var publicStat = false;
     var ext = path.extname(src)
 
-    if (src.indexOf('http')==0) {
+    if (src.indexOf('http')==0||src.indexOf('//')==0) {
       return src
     }
     
     if (src.indexOf(pbc.css)==0 || src.indexOf(pbc.js)==0 ) {
       publicStat = true
       src = src.replace(pbc.css, '').replace(pbc.js, '')
-      if (src.indexOf('/')==0) {
+      if (src.indexOf('/') == 0) {
         src = src.replace(path.sep, '')
       }
     }
@@ -249,7 +259,7 @@ immitStatics.prototype = {
     }
 
     if (target) {
-      if (target.indexOf('http')==0) {
+      if (target.indexOf('http')==0||target.indexOf('//')==0) {
         return target
       } 
       return type == 'css' ? path_join(this.public.css, target) : path_join(this.public.js, target)
