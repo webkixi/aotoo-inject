@@ -35,7 +35,7 @@ function path_join(jspath, src) {
     }
     // return Url.resolve(jspath, src);
   } else {
-    return Path.join(jspath, src);
+    return path.join(jspath, src);
   }
 }
 
