@@ -6,21 +6,21 @@ if (typeof SAX == 'undefined') {
   var SAX = require('fkp-sax')
 }
 var ImmitSax = SAX('IMMITSAX')
-const reNewLine = /\n+$/g
+var reNewLine = /\n+$/g
 
-function execCallBack(cb){
-  setTimeout(function() {
+function execCallBack(cb) {
+  setTimeout(function () {
     typeof cb == 'function' ? cb() : ''
   }, 100);
 }
 
-function reserveExt(ext){
-  const vExts = [
+function reserveExt(ext) {
+  var vExts = [
     '.min',
     '.esm',
     '.bundle'
   ]
-  return vExts.indexOf(ext)>-1 ? true : false
+  return vExts.indexOf(ext) > -1 ? true : false
 }
 
 function path_join(jspath, src) {
@@ -35,53 +35,53 @@ function path_join(jspath, src) {
     }
     // return Url.resolve(jspath, src);
   } else {
-    return path.join(jspath, src);
+    return Path.join(jspath, src);
   }
 }
 
 // 注入引用样式
-function createCSSlink(id, src, cb){
-  if(document.getElementById(id)) return true;
+function createCSSlink(id, src, cb) {
+  if (document.getElementById(id)) return true;
 
   var doc = document
   var headElement = doc.getElementsByTagName("head")[0];
 
   var tmpLink = doc.createElement('link');
-  tmpLink.onload = tmpLink.onreadystatechange = function(){
-    if( ! this.readyState || this.readyState=='loaded' || this.readyState=='complete' ){
+  tmpLink.onload = tmpLink.onreadystatechange = function () {
+    if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
       ImmitSax.data[id] = 'finish'
       ImmitSax.roll(id)
       ImmitSax.off(id)
     }
   }
 
-  if (src.lastIndexOf('.css')==-1) src += '.css'
+  if (src.lastIndexOf('.css') == -1) src += '.css'
   tmpLink.setAttribute("rel", 'stylesheet');
   tmpLink.setAttribute("href", src);
   tmpLink.setAttribute("id", id);
   headElement.appendChild(tmpLink);
 }
 
-function createCSSServer(did, src, cb){
+function createCSSServer(did, src, cb) {
   var publicPath = this.public.css
-  if (src.indexOf('http')==0 || src.indexOf(publicPath)==0 || src.indexOf('/')==0) {
-    this.staticList.css[did] = '<link id="'+did+'" rel="stylesheet" type="text/css" href="'+src+'">\n'
+  if (src.indexOf('http') == 0 || src.indexOf(publicPath) == 0 || src.indexOf('/') == 0) {
+    this.staticList.css[did] = '<link id="' + did + '" rel="stylesheet" type="text/css" href="' + src + '">\n'
   }
   else {
-    this.staticList.css[did] = '<style type="text/css" id="'+did+'">'+src.toString()+'</style>\n'
+    this.staticList.css[did] = '<style type="text/css" id="' + did + '">' + src.toString() + '</style>\n'
   }
   if (typeof cb == 'function') {
     cb()
   }
 }
 
-function createJSServer(did, src, cb){
+function createJSServer(did, src, cb) {
   var publicPath = this.public.js
-  if (src.indexOf('http')==0 || src.indexOf(publicPath)==0 || src.indexOf('/')==0) {
-    this.staticList.js[did] = '<script type="text/javascript" id="'+did+'" src="'+src+'"></script>\n'
+  if (src.indexOf('http') == 0 || src.indexOf(publicPath) == 0 || src.indexOf('/') == 0) {
+    this.staticList.js[did] = '<script type="text/javascript" id="' + did + '" src="' + src + '"></script>\n'
   }
   else {
-    this.staticList.js[did] = '<script type="text/javascript" id="'+did+'" >'+src.toString()+'</script>\n'
+    this.staticList.js[did] = '<script type="text/javascript" id="' + did + '" >' + src.toString() + '</script>\n'
   }
   if (typeof cb == 'function') {
     cb()
@@ -90,10 +90,10 @@ function createJSServer(did, src, cb){
 
 
 // 注入内联样式
-function createCSSInner(id, cssCode, cb){
+function createCSSInner(id, cssCode, cb) {
   var doc = document
   var headElement = doc.getElementsByTagName("head")[0];
-  
+
   // css source
   if (! +"\v1") { // ie 增加自动转换透明度功能，用户只需输入W3C的透明样式，它会自动转换成IE的透明滤镜
     var t = cssCode.match(/opacity:(\d?\.\d+);/);
@@ -126,15 +126,15 @@ function createCSSInner(id, cssCode, cb){
 }
 
 // 生成js引用或者inner code
-function createJSScript(id, src, cb){
+function createJSScript(id, src, cb) {
   var headElement = document.getElementsByTagName("head")[0];
 
   var scripter = document.createElement('script');
   scripter.setAttribute("type", 'text/javascript');
   scripter.setAttribute("id", id);
-  if (src.indexOf('http')===0 || src.indexOf('/')===0){
-    scripter.onload = scripter.onreadystatechange = function(){
-      if( ! this.readyState || this.readyState=='loaded' || this.readyState=='complete' ){
+  if (src.indexOf('http') === 0 || src.indexOf('/') === 0) {
+    scripter.onload = scripter.onreadystatechange = function () {
+      if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
         ImmitSax.data[id] = 'finish'
         ImmitSax.roll(id)
         ImmitSax.off(id)
@@ -144,7 +144,7 @@ function createJSScript(id, src, cb){
     scripter.setAttribute("src", src);
     headElement.appendChild(scripter);
   }
-  else{
+  else {
     scripter.appendChild(document.createTextNode(src))
     headElement.appendChild(scripter);
   }
@@ -153,8 +153,8 @@ function createJSScript(id, src, cb){
   ImmitSax.off(id)
 }
 
-function immitCss(id, src, cb){
-  if (src.indexOf('http')==0 || src.indexOf('/')==0) {
+function immitCss(id, src, cb) {
+  if (src.indexOf('http') == 0 || src.indexOf('/') == 0) {
     ImmitSax.on(id, cb)
     return createCSSlink(id, src, cb)
   } else {
@@ -163,8 +163,8 @@ function immitCss(id, src, cb){
   }
 }
 
-function immitJs(id, src, cb){
-  if (src.indexOf('http')==0 || src.indexOf('/')==0) {
+function immitJs(id, src, cb) {
+  if (src.indexOf('http') == 0 || src.indexOf('/') == 0) {
     ImmitSax.on(id, cb)
     return createJSScript(id, src, cb)
   } else {
@@ -173,7 +173,7 @@ function immitJs(id, src, cb){
   }
 }
 
-function immitStatics(opts){
+function immitStatics(opts) {
   if (!opts) opts = {}
   this.opts = opts
   this.staticList = {
@@ -183,18 +183,18 @@ function immitStatics(opts){
     css: '/css/',
     js: '/js/'
   }
-  this.mapper = opts.mapper || {css: {}, js: {}, pageCss: {}, pageJs: {}}
+  this.mapper = opts.mapper || { css: {}, js: {}, pageCss: {}, pageJs: {} }
 }
 
 immitStatics.prototype = {
-  init: function(){
+  init: function () {
     this.staticList = {
       js: {}, css: {}
     }
     return this
   },
 
-  myMapper: function(){
+  myMapper: function () {
     var mapper = this.mapper;
     var css, js;
     if (mapper.commonDependencies) {
@@ -203,7 +203,7 @@ immitStatics.prototype = {
       css.common = mapper.commonDependencies.css.common
       js.common = mapper.commonDependencies.js.common
       js.ie = mapper.commonDependencies.js.ie
-    } 
+    }
     else {
       css = mapper.css || mapper.pageCss
       js = mapper.js || mapper.pageJs
@@ -217,7 +217,7 @@ immitStatics.prototype = {
     return _mapper
   },
 
-  realySrc: function(src, type){
+  realySrc: function (src, type) {
     if (!type) type = 'css'
     if (reNewLine.test(src)) return src
     var mapper = this.myMapper()
@@ -231,18 +231,38 @@ immitStatics.prototype = {
     var publicStat = false;
     var ext = path.extname(src)
 
-    if (src.indexOf('http')==0||src.indexOf('//')==0) {
+    if (src.indexOf('http') == 0 || src.indexOf('//') == 0) {
       return src
     }
-    
-    if (src.indexOf(pbc.css)==0 || src.indexOf(pbc.js)==0 ) {
+
+    if (src.indexOf(pbc.css) == 0 || src.indexOf(pbc.js) == 0) {
       publicStat = true
       src = src.replace(pbc.css, '').replace(pbc.js, '')
       if (src.indexOf('/') == 0) {
         src = src.replace(path.sep, '')
       }
+    } else {
+      if (src.indexOf('/css/') == 0 || src.indexOf('/js/') == 0) {
+        src = src.replace('/css/', '').replace('/js/', '')
+        publicStat = true
+        // if (type == 'css') {
+        //   if (pbc.css.lastIndexOf('/') == (pbc.css.length - 1)) {
+        //     src = pbc.css + src
+        //   } else {
+        //     src = pbc.css + path.sep + src
+        //   }
+        // }
+
+        // if (type == 'js') {
+        //   if (pbc.js.lastIndexOf('/') == (pbc.js.length - 1)) {
+        //     src = pbc.js + src
+        //   } else {
+        //     src = pbc.js + path.sep + src
+        //   }
+        // }
+      }
     }
-    
+
     var _src = src
     if (ext) {
       if (!reserveExt(ext)) {
@@ -259,9 +279,9 @@ immitStatics.prototype = {
     }
 
     if (target) {
-      if (target.indexOf('http')==0||target.indexOf('//')==0) {
+      if (target.indexOf('http') == 0 || target.indexOf('//') == 0) {
         return target
-      } 
+      }
       return type == 'css' ? path_join(this.public.css, target) : path_join(this.public.js, target)
     }
 
@@ -271,7 +291,7 @@ immitStatics.prototype = {
       return src
     }
   },
-  _js: function(src, cb){
+  _js: function (src, cb) {
     if (src) {
       src = this.realySrc(src, 'js')
       var $id = md5(src).slice(22)
@@ -295,7 +315,7 @@ immitStatics.prototype = {
     }
   },
 
-  _css: function(src, cb){
+  _css: function (src, cb) {
     if (src) {
       src = this.realySrc(src, 'css')
       var $id = md5(src).slice(22)
@@ -319,7 +339,7 @@ immitStatics.prototype = {
     }
   },
 
-  js: function(src, cb){
+  js: function (src, cb) {
     if (typeof src == 'string') {
       this._js(src, cb)
     }
@@ -328,12 +348,12 @@ immitStatics.prototype = {
       var that = this
       if (src.length) {
         if (src.length == 1) {
-          that._js(src[0], function(){
+          that._js(src[0], function () {
             src.shift()
             typeof cb == 'function' ? cb() : ''
           })
         } else {
-          that._js(src[0], function(){
+          that._js(src[0], function () {
             src.shift()
             that.js(src, cb)
           })
@@ -343,7 +363,7 @@ immitStatics.prototype = {
     return this
   },
 
-  css: function(src, cb){
+  css: function (src, cb) {
     if (typeof src == 'string') {
       this._css(src, cb)
     }
@@ -352,12 +372,12 @@ immitStatics.prototype = {
       var that = this
       if (src.length) {
         if (src.length == 1) {
-          that._css(src[0], function(){
+          that._css(src[0], function () {
             src.shift()
             typeof cb == 'function' ? cb() : ''
           })
         } else {
-          that._css(src[0], function(){
+          that._css(src[0], function () {
             src.shift()
             that.css(src, cb)
           })
@@ -370,7 +390,7 @@ immitStatics.prototype = {
 
 
 /*
-  const immit = inject({
+  var immit = inject({
     public: {
       css: '',
       js: ''
@@ -396,6 +416,6 @@ immitStatics.prototype = {
 
   })
 */
-module.exports = function inject(opts){
+module.exports = function inject(opts) {
   return new immitStatics(opts)
 }
