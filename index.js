@@ -2,10 +2,8 @@ var isClient = typeof window != 'undefined'
 var Url = require('url')
 var path = require('path')
 var md5 = require('blueimp-md5')
-if (typeof SAX == 'undefined') {
-  var SAX = require('fkp-sax')
-}
-var ImmitSax = SAX('IMMITSAX')
+var sax = require('fkp-sax')
+var ImmitSax = sax('IMMITSAX')
 var reNewLine = /\n+$/g
 
 function execCallBack(cb) {
@@ -50,8 +48,10 @@ function createCSSlink(id, src, cb) {
   tmpLink.onload = tmpLink.onreadystatechange = function () {
     if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
       ImmitSax.data[id] = 'finish'
-      ImmitSax.roll(id)
-      ImmitSax.off(id)
+      setTimeout(() => {
+        ImmitSax.roll(id)
+        ImmitSax.off(id)
+      }, 200);
     }
   }
 
@@ -136,8 +136,10 @@ function createJSScript(id, src, cb) {
     scripter.onload = scripter.onreadystatechange = function () {
       if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
         ImmitSax.data[id] = 'finish'
-        ImmitSax.roll(id)
-        ImmitSax.off(id)
+        setTimeout(() => {
+          ImmitSax.roll(id)
+          ImmitSax.off(id)
+        }, 200);
       }
     }
     // if (src.lastIndexOf('.js')==-1) src += '.js'
