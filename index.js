@@ -48,7 +48,7 @@ function createCSSlink(id, src, cb) {
   tmpLink.onload = tmpLink.onreadystatechange = function () {
     if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
       ImmitSax.data[id] = 'finish'
-      setTimeout(() => {
+      setTimeout(function(){
         ImmitSax.roll(id)
         ImmitSax.off(id)
       }, 200);
@@ -136,7 +136,7 @@ function createJSScript(id, src, cb) {
     scripter.onload = scripter.onreadystatechange = function () {
       if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
         ImmitSax.data[id] = 'finish'
-        setTimeout(() => {
+        setTimeout(function(){
           ImmitSax.roll(id)
           ImmitSax.off(id)
         }, 200);
