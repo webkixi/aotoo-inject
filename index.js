@@ -178,21 +178,14 @@ function immitJs(id, src, cb) {
 function immitStatics(opts) {
   if (!opts) opts = {}
   this.opts = opts
-  this.staticList = {
-    js: {}, css: {}
-  }
-  this.public = opts.public || {
-    css: '/css/',
-    js: '/js/'
-  }
+  this.staticList = { js: {}, css: {} }
+  this.public = opts.public || { css: '/css/', js: '/js/' }
   this.mapper = opts.mapper || { css: {}, js: {}, pageCss: {}, pageJs: {} }
 }
 
 immitStatics.prototype = {
   init: function () {
-    this.staticList = {
-      js: {}, css: {}
-    }
+    this.staticList = { js: {}, css: {} }
     return this
   },
 
@@ -284,19 +277,29 @@ immitStatics.prototype = {
       if (target.indexOf('http') == 0 || target.indexOf('//') == 0) {
         return target
       }
-      return type == 'css' ? path_join(this.public.css, target) : path_join(this.public.js, target)
+      if (
+        target.indexOf(pbc.js) == 0 || 
+        target.indexOf(pbc.css) == 0 ||
+        target.indexOf('/css/') == 0 ||
+        target.indexOf('/js/') == 0
+      ) {
+        return target
+      }
+      return type == 'css' ? path_join(pbc.css, target) : path_join(pbc.js, target)
     }
 
     if (publicStat) {
-      return type == 'css' ? path_join(this.public.css, src) : path_join(this.public.js, src)
+      return type == 'css' ? path_join(pbc.css, src) : path_join(pbc.js, src)
     } else {
       return src
     }
   },
+  
   _js: function (src, cb) {
     if (src) {
+      var tmpTime = Date.now()
       src = this.realySrc(src, 'js')
-      var $id = md5(src).slice(22)
+      var $id = md5(tmpTime).slice(22)
       var data = ImmitSax.data
       if (!isClient) {
         return createJSServer.call(this, $id, src, cb)
@@ -319,8 +322,9 @@ immitStatics.prototype = {
 
   _css: function (src, cb) {
     if (src) {
+      var tmpTime = Date.now()
       src = this.realySrc(src, 'css')
-      var $id = md5(src).slice(22)
+      var $id = md5(tmpTime).slice(22)
       var data = ImmitSax.data
       if (!isClient) {
         return createCSSServer.call(this, $id, src, cb)
