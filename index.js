@@ -297,9 +297,8 @@ immitStatics.prototype = {
   
   _js: function (src, cb) {
     if (src) {
-      var tmpTime = Date.now()
       src = this.realySrc(src, 'js')
-      var $id = md5(tmpTime).slice(22)
+      var $id = md5(src).slice(22)
       var data = ImmitSax.data
       if (!isClient) {
         return createJSServer.call(this, $id, src, cb)
@@ -322,9 +321,8 @@ immitStatics.prototype = {
 
   _css: function (src, cb) {
     if (src) {
-      var tmpTime = Date.now()
       src = this.realySrc(src, 'css')
-      var $id = md5(tmpTime).slice(22)
+      var $id = md5(src).slice(22)
       var data = ImmitSax.data
       if (!isClient) {
         return createCSSServer.call(this, $id, src, cb)
