@@ -149,10 +149,10 @@ function createJSScript(id, src, cb) {
   else {
     scripter.appendChild(document.createTextNode(src))
     headElement.appendChild(scripter);
+    ImmitSax.data[id] = 'finish'
+    ImmitSax.roll(id)
+    ImmitSax.off(id)
   }
-  ImmitSax.data[id] = 'finish'
-  ImmitSax.roll(id)
-  ImmitSax.off(id)
 }
 
 function immitCss(id, src, cb) {
@@ -345,22 +345,31 @@ immitStatics.prototype = {
 
   js: function (src, cb) {
     if (typeof src == 'string') {
-      this._js(src, cb)
+      // this._js(src, cb)
+      src = [src]
     }
 
     if (src && Array.isArray(src)) {
       var that = this
       if (src.length) {
-        if (src.length == 1) {
-          that._js(src[0], function () {
-            src.shift()
-            typeof cb == 'function' ? cb() : ''
-          })
-        } else {
-          that._js(src[0], function () {
-            src.shift()
-            that.js(src, cb)
-          })
+        that._js(src[0], function () {
+          src.shift()
+          that.js(src, cb)
+        })
+        // if (src.length == 1) {
+        //   that._js(src[0], function () {
+        //     src.shift()
+        //     typeof cb == 'function' ? cb() : ''
+        //   })
+        // } else {
+        //   that._js(src[0], function () {
+        //     src.shift()
+        //     that.js(src, cb)
+        //   })
+        // }
+      } else {
+        if (cb && typeof cb == 'function') {
+          cb()
         }
       }
     }
@@ -369,22 +378,31 @@ immitStatics.prototype = {
 
   css: function (src, cb) {
     if (typeof src == 'string') {
-      this._css(src, cb)
+      // this._css(src, cb)
+      src = [src]
     }
 
     if (src && Array.isArray(src)) {
       var that = this
       if (src.length) {
-        if (src.length == 1) {
-          that._css(src[0], function () {
-            src.shift()
-            typeof cb == 'function' ? cb() : ''
-          })
-        } else {
-          that._css(src[0], function () {
-            src.shift()
-            that.css(src, cb)
-          })
+        that._css(src[0], function () {
+          src.shift()
+          that.css(src, cb)
+        })
+        // if (src.length == 1) {
+        //   that._css(src[0], function () {
+        //     src.shift()
+        //     typeof cb == 'function' ? cb() : ''
+        //   })
+        // } else {
+        //   that._css(src[0], function () {
+        //     src.shift()
+        //     that.css(src, cb)
+        //   })
+        // }
+      } else {
+        if (cb && typeof cb == 'function') {
+          cb()
         }
       }
     }
