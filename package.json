@@ -22,7 +22,6 @@
   },
   "homepage": "https://github.com/webkixi/aotoo-inject#readme",
   "dependencies": {
-    "blueimp-md5": "^2.7.0",
-    "fkp-sax": "^1.5.19"
+    "md5": "^2.3.0"
   }
 }
