@@ -1,7 +1,6 @@
 # aotoo-inject
-动态注入静态资源，动态注入css，js
-1. 防重复注入  
-2. 支持映射mapper文件
+动态注入JS/CSS(非webpack打包)  
+有些场景下我们需要动态注入一些第三方的库(效果库)，比如jquery及其插件，百度ueditor编辑器，其本身不支持AMD,CMD,UMD模式。则可以通过aotoo-inject方便的置入到header头部
 
 ## install
 ```
@@ -9,70 +8,64 @@
 npm install aotoo-inject --save
 ```
 
-## instantiation
-```
-// opts = {
-//   mapper: {
-//     js: {},
-//     css: {}
-//   }
-//   public: {
-//     js: '/',  default: '/js/'
-//     css: '/'  default: '/css/'
-//   }
-// }
+## 初始化
+```js
+opts = {
+  mapper: {
+    js: {
+      vue: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.min.js',
+      axios: 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js'
+    },
+    css: {}
+  }
+}
 
 var inject = require('aotoo-inject')(opts)
 ```
 
-## single sample
-```
-var inject = require('aotoo-inject')()
-inject.css('/css/hello', callback)
-inject.js('/css/hello', callback)
+## demo1 
+注入第三方库
+
+```js
+var inject = require('aotoo-inject')(opts)
+inject.js([
+  'jquery',
+  'vue'
+], function(){
+  /* 加载完成 */
+})
+
+/*
+<head>
+    <title>aotoo-hub 多项目全栈脚手架</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <script type="text/javascript" id="bab617c9b8f7bd92aa05a707a1c589ff" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" id="e571e5cc5bd02a4b5dbb650a6f7cfe46" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.min.js"></script>
+</head>
+*/
+
 ```
 
-## multiple sample
-```
-var inject = require('aotoo-inject')()
-inject.css(
-  [
-    '/css/hello',
-    '/css/hello1',
-    '/css/hello2',
-  ], 
-  function(){
-    console.log('all has loaded')
+## demo2
+实时注入样式
+
+```js
+var inject = require('aotoo-inject')(opts)
+inject.css(`
+  body{
+    font-size: 18px;
   }
-)
+`)
 
-inject.js(
-  [
-    '/js/hello',
-    '/js/hello1',
-    '/js/hello2',
-  ], 
-  function(){
-    console.log('all has loaded')
-  }
-)
-```
-
-
-## mapper sample
-```
-var inject = require('aotoo-inject')()
-inject.mapper = {
-  js: { 
-    '/css/hello': 'http://www.xxx.com/css/hello_with_hash.js'
-    /* 静态映射js */
-  },
-  css: {
-    '/css/hello': '/css/hello_with_hash.css'
-    /* 静态映射css */
-  }
-}
-
-inject.css('/css/hello', callback)
-inject.js('/css/hello', callback)
+/*
+<head>
+    <title>aotoo-hub 多项目全栈脚手架</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <style id='xxxx'>
+    body{
+      font-size: 18px;
+    }
+  </style>
+</head>
+*/
 ```
