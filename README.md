@@ -20,7 +20,7 @@ opts = {
       axios: 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js'
     },
     css: {
-      animate: 'https://unpkg.com/browse/animate.css@4.1.1/animate.min.css'
+      animate: 'https://unpkg.com/animate.css'
     }
   }
 }
@@ -67,7 +67,7 @@ inject.css([
 <head>
     <title>aotoo-hub 多项目全栈脚手架</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-  <link rel="stylesheet" type="text/css" href="https://unpkg.com/browse/animate.css@4.1.1/animate.min.css" />
+  <link rel="stylesheet" id="xxxxxxx" type="text/css" href="https://unpkg.com/animate.css" />
 </head>
 */
 ```
