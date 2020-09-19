@@ -1,14 +1,17 @@
 # aotoo-inject
+
 动态注入JS/CSS(非webpack打包)  
 有些场景下我们需要动态注入一些第三方的库(效果库)，比如jquery及其插件，百度ueditor编辑器，其本身不支持AMD,CMD,UMD模式。则可以通过aotoo-inject方便的置入到header头部
 
 ## install
-```
+
+```bash
 // install
 npm install aotoo-inject --save
 ```
 
 ## 初始化
+
 ```js
 opts = {
   mapper: {
@@ -16,14 +19,17 @@ opts = {
       vue: 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.12/vue.min.js',
       axios: 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js'
     },
-    css: {}
+    css: {
+      animate: 'https://unpkg.com/browse/animate.css@4.1.1/animate.min.css'
+    }
   }
 }
 
 var inject = require('aotoo-inject')(opts)
 ```
 
-## demo1 
+## demo1
+
 注入第三方库
 
 ```js
@@ -47,6 +53,27 @@ inject.js([
 ```
 
 ## demo2
+
+实时注入样式表
+
+```js
+inject.css([
+  'animate'
+], function(){
+  /*加载完成*/
+})
+
+/*
+<head>
+    <title>aotoo-hub 多项目全栈脚手架</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="https://unpkg.com/browse/animate.css@4.1.1/animate.min.css" />
+</head>
+*/
+```
+
+## demo3
+
 实时注入样式
 
 ```js
