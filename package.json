@@ -1,6 +1,6 @@
 {
   "name": "aotoo-inject",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "inject umd js/css into page header",
   "main": "index.js",
   "scripts": {

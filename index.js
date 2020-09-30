@@ -236,9 +236,11 @@ var defaultCSSlib = {
 function immitStatics(opts) {
   if (!opts) opts = {}
   this.opts = opts
+  var jsRef = Object.assign({}, defaultJSlib, ((opts && opts.js)||{}))
+  var cssRef = Object.assign({}, defaultCSSlib, ((opts && opts.css)||{}))
   this.staticList = { js: {}, css: {} }
   this.public = opts.public || { css: '/css/', js: '/js/' }
-  this.mapper = opts.mapper || { css: {}, js: {}, pageCss: {}, pageJs: {} }
+  this.mapper = opts.mapper || { css: cssRef, js: jsRef, pageCss: {}, pageJs: {} }
 }
 
 immitStatics.prototype = {
@@ -254,14 +256,13 @@ immitStatics.prototype = {
   setMapper: function(param) {
     var mapper = this.mapper
     if(isObject(param)) {
+      var jsRef = Object.assign({}, this.mapper.js, (param.js||{}))
+      var cssRef = Object.assign({}, this.mapper.css, (param.css||{}))
       mapper = Object.assign({}, mapper, param)
+      mapper.js = jsRef
+      mapper.css = cssRef
     }
     this.mapper = mapper
-    var jsMapper = Object.assign({}, defaultJSlib, this.mapper.js)
-    var cssMapper = Object.assign({}, defaultCSSlib, this.mapper.css)
-    this.mapper.js = jsMapper
-    this.mapper.css = cssMapper
-    return this
   },
 
   getMapper: function() {
